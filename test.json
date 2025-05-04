@@ -1,0 +1,222 @@
+{
+    "code": 1000,
+    "result": {
+        "content": [
+            {
+                "id": 7,
+                "name": "VANS OLD SKOOL CLASSIC",
+                "price": 1000000.0,
+                "image": "/products/VANS OLD SKOOL CLASSIC.jpg",
+                "description": "VANS - một thương hiệu giày thể thao vang tầm thế giới với các sản phẩm đi đôi cùng tâm huyết, chất lượng và đẳng cấp thời trang toàn cầu. Với kinh nghiệm hoạt động trong nghề cực kỳ phong phú với hơn nửa thế kỷ cống hiến hết mình, VANS chính thức đi vào hoạt động và cho ra mắt những sản phẩm đầu tiên gây chấn động thị trường Sneaker vào ngày 16 tháng 3 năm 1966 tại số 704E Broadway, Anaheim, California. Sau 11 năm hoạt động vào năm 1977  cùng với những thành công nhất định, VANS chưa một lần ngủ quên trong chiến thẳng của mình mà tiếp tục cống hiến đến các VANSAHOLIC một huyền thoại tiếp theo mang tên VANS OLD SKOOL. ",
+                "brand": "Vans",
+                "color": "Đen",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            },
+            {
+                "id": 8,
+                "name": "Nike Dunk Low Retro",
+                "price": 2929000.0,
+                "image": "/products/Nike Dunk Low Retro.png",
+                "description": "Bạn luôn có thể tin tưởng vào một tác phẩm kinh điển. Dunk Low kết hợp phong cách màu sắc mang tính biểu tượng với chất liệu cao cấp và lớp đệm sang trọng để mang lại sự thoải mái khi thay đổi cuộc chơi kéo dài. Khả năng là vô tận—bạn sẽ mặc chiếc Dunks của mình như thế nào?",
+                "brand": "Nike",
+                "color": "Đỏ",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            },
+            {
+                "id": 16,
+                "name": "Dây giày",
+                "price": 10000.0,
+                "image": "/products/Dây giày.jpg",
+                "description": "dây",
+                "brand": "Vans",
+                "color": "Trắng",
+                "category": {
+                    "id": 1,
+                    "name": "Phụ kiện"
+                }
+            },
+            {
+                "id": 17,
+                "name": "Giày Ultraboost 5x",
+                "price": 4900000.0,
+                "image": "/products/Giày Ultraboost 5x.avif",
+                "description": "Chinh phục kỷ lục cá nhân mới thật dễ dàng với đôi giày chạy bộ adidas này. Đế BOOST nhẹ nhất từ trước đến nay của chúng tôi hoàn trả năng lượng liên tục trên từng cây số để bạn cảm thấy sung sức từ đầu đến cuối buổi chạy. Hệ thống Torsion System giữa gót giày và mũi giày tạo độ ổn định, cho sải bước mượt mà, vững chãi bất kể cự ly hay tốc độ nào. Tất cả được đặt trên đế ngoài Continental™ Rubber với độ bám chắc chắn cả trong điều kiện khô ráo cũng như ẩm ướt để bạn luôn tự tin sải bước.",
+                "brand": "Adidas",
+                "color": "Đen",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            },
+            {
+                "id": 18,
+                "name": "Adizero Adios Pro 4",
+                "price": 6500000.0,
+                "image": "/products/Adizero Adios Pro 4.avif",
+                "description": "Đã được chứng minh là dòng giày giành nhiều chiến thắng nhất thế giới, Adizero Adios Pro là đỉnh cao của dòng giày chạy đua Adizero. Giày Adios Pro 4 được thiết kế dành cho những runner tốc độ muốn trải nghiệm tốc độ nhanh hơn, với các tính năng nâng cao được thiết kế để tối ưu hóa hiệu năng chạy bộ.",
+                "brand": "Adidas",
+                "color": "Xanh",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            },
+            {
+                "id": 19,
+                "name": "Nike SB Blazer Low Pro GT Premium",
+                "price": 2119199.0,
+                "image": "/products/Nike SB Blazer Low Pro GT Premium.jpg",
+                "description": "Kiểu dáng đẹp, đơn giản nhưng không bao giờ cơ bản. Phiên bản Blazer Low Pro GT này kỷ niệm 20 năm hợp tác với vận động viên trượt ván mang tính biểu tượng Grant Taylor. Nó được làm từ da cao cấp, mềm mại khi mài mòn nhưng vẫn bền. Để kỷ niệm cột mốc quan trọng này, chúng tôi đã đưa vào các hình dán và đồ họa đặc biệt. Blazer đã tồn tại hàng thập kỷ—đã đến lúc tìm hiểu lý do.",
+                "brand": "Nike",
+                "color": "Trắng",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            }
+        ],
+        "pageable": {
+            "pageNumber": 0,
+            "pageSize": 6,
+            "sort": {
+                "empty": true,
+                "sorted": false,
+                "unsorted": true
+            },
+            "offset": 0,
+            "unpaged": false,
+            "paged": true
+        },
+        "totalElements": 6,
+        "totalPages": 1,
+        "last": true,
+        "size": 6,
+        "number": 0,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "first": true,
+        "numberOfElements": 6,
+        "empty": false
+    }
+}
+
+
+{
+    "code": 1000,
+    "result": {
+        "content": [
+            {
+                "id": 20,
+                "name": "VANS AUTHENTIC CLASSIC BLACK/WHITE",
+                "price": 1450000.0,
+                "image": "/products/VANS AUTHENTIC CLASSIC BLACKWHITE.webp",
+                "description": "VANS AUTHENTIC là một trong những sản phẩm xung phong đầu tiên, mở đầu cho một con đường tiếp nối đam mê của một thương hiệu giày vươn tầm thế giới. Và khi mà cái cũng cùng cái mới giao thoa kết hợp cùng với sự tinh tế và sự cố gắng không ngừng phá bỏ giới hạn của nhà OFF THE WALL, một tinh hoa đã của làng Sneaker đã ra đời được ra mắt sớm nhất từ năm 1966 với tên gọi VANS #44, được trang bị đế cao su độ bám tốt cho những môn thể thao mạo hiểm như trượt ván, BMX v.v..., upper vải canvas cao cấp, phong cách cổ điển hợp với cả nam lẫn nữ.",
+                "brand": "Vans",
+                "color": "Đen",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            },
+            {
+                "id": 21,
+                "name": "VANS SK8-HI CLASSIC TRUE WHITE",
+                "price": 2000000.0,
+                "image": "/products/VANS SK8-HI CLASSIC TRUE WHITE.webp",
+                "description": "Thông tin sản phẩm\n \nCách đo size VANS\nVANS SK8 HI là một trong những dòng giày mang tính kinh điển và làm nên thương hiệu của VANS OFF THE WALL. Kiểu dáng của SK8 HI vẫn chú trọng phát triển sự đơn giản và thoải mái đến từ phần thiết kế cũng như màu sắc, VANS SK8 còn được ưu ái gọi là một đôi OLD SKOOL cổ cao, phần cổ giày được đệm một cách đặc biệt khiến cho chúng trở nên êm ái.",
+                "brand": "Vans",
+                "color": "Trắng",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            },
+            {
+                "id": 22,
+                "name": "Chai Dung Dịch Vệ Sinh Giày Shucare Sneaker Shampoo 85ml",
+                "price": 89000.0,
+                "image": "/products/Chai Dung Dịch Vệ Sinh Giày Shucare Sneaker Shampoo 85ml.webp",
+                "description": "Một loạt các sản phẩm của Shucare luôn chú trọng đến loại phụ kiện thời trang quan trọng là giày dép. Các sản phẩm liên tục ra đời đều rất phù hợp với giày dép ngày nay bao gồm các chất đánh bóng truyền thống, phun đánh bóng, sản phẩm bảo vệ giày khỏi vết bẩn, sản phẩm chống thấm nước, bọt biển làm sạch giày nhanh chóng và dễ dàng, sản phẩm làm sạch cho da, da lộn, vải và tổng hợp... ",
+                "brand": "Shucare",
+                "color": "Xanh",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            },
+            {
+                "id": 23,
+                "name": "Lót giày thể thao cao cấp",
+                "price": 320000.0,
+                "image": "/products/Lót giày thể thao cao cấp.webp",
+                "description": "Bước chân nhẹ nhàng thoải mái là minh chứng cho cơ thể khỏe mạnh. Nhưng nếu chân bạn không thoải mái thì cho dù bạn có khỏe mạnh cũng không thể đi lại một cách nhẹ nhàng. Đặc biệt là đối với những vận động viên thể thao đòi hỏi sự di chuyển vận động nhiều thì đôi chân càng trở lên quan trọng. Do đó, để giải quyết nỗi lo lắng của mọi người nói chung, các vận động viên thể thao nói riêng, XIMO xin hân hạnh giới thiệu đến quý khách hàng sản phẩm Lót giày thể thao êm chân khử mùi LGYK07.",
+                "brand": "Nike",
+                "color": "Trắng",
+                "category": {
+                    "id": 1,
+                    "name": "Phụ kiện"
+                }
+            },
+            {
+                "id": 50,
+                "name": "Giày",
+                "price": 999999.0,
+                "image": "/products/Screenshot 2024-12-19 205852.png",
+                "description": "Giày",
+                "brand": "VANS",
+                "color": "Đen",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            },
+            {
+                "id": 52,
+                "name": "Tower fdfdssdf",
+                "price": 1.23123312E8,
+                "image": "/products/Screenshot 2024-12-21 165533.png",
+                "description": "ads",
+                "brand": "ads",
+                "color": "ads",
+                "category": {
+                    "id": 2,
+                    "name": "Giày"
+                }
+            }
+        ],
+        "pageable": {
+            "pageNumber": 1,
+            "pageSize": 6,
+            "sort": {
+                "empty": true,
+                "sorted": false,
+                "unsorted": true
+            },
+            "offset": 6,
+            "unpaged": false,
+            "paged": true
+        },
+        "totalElements": 12,
+        "totalPages": 2,
+        "last": true,
+        "size": 6,
+        "number": 1,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "first": false,
+        "numberOfElements": 6,
+        "empty": false
+    }
+}b
