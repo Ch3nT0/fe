@@ -7,6 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import { DatePicker } from 'antd';
 
 import dayjs from 'dayjs';
+import { useSelector } from "react-redux";
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const { Title } = Typography;
@@ -14,7 +15,8 @@ const { Title } = Typography;
 export default function HotelDetails() {
     const [rooms, setRooms] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filters, setFilters] = useState({ location: "" });
+    const [filters, setFilters] = useState({ date: { checkIn: "", checkOut: "" }, capacity: "", type: "" });
+    const isAdmin = useSelector((state) => state.auth.isAdmin);
     const { hotelid } = useParams();
     useEffect(() => {
         fetchHotels({ page: 0 });
@@ -27,6 +29,7 @@ export default function HotelDetails() {
                 Object.entries(params).filter(([_, v]) => v)
             ).toString();
             const encodedQueryString = queryString.replace(/\+/g, '%20');
+            console.log(`http://localhost:8080/hotel/${hotelid}?${encodedQueryString}`);
             const response = await fetch(`http://localhost:8080/hotel/${hotelid}?${encodedQueryString}`);
             if (!response.ok) throw new Error("Không thể tải danh sách phòng khách sạn!");
 
@@ -41,7 +44,12 @@ export default function HotelDetails() {
     };
 
     const handleSearch = () => {
-        const params = { location: filters.location || "" };
+        const params = {
+            checkIn: filters.date.checkIn ? dayjs(filters.date.checkIn).format("YYYY-MM-DD") : "",
+            checkOut: filters.date.checkOut ? dayjs(filters.date.checkOut).format("YYYY-MM-DD") : "",
+            capacity: filters.capacity || "",
+            type: filters.type || "",
+        };
         fetchHotels(params);
     };
 
@@ -49,27 +57,39 @@ export default function HotelDetails() {
         <Row gutter={16} style={{ marginTop: 50 }}>
             {/* Bộ lọc */}
             <Col span={6}>
-                <RangePicker
+                {/* <RangePicker
                     style={{ width: "100%", marginBottom: 10 }}
                     onChange={(dates) => {
                         if (dates) {
-                            setFilters({ ...filters, checkIn: dates[0], checkOut: dates[1] });
+                            setFilters({
+                                ...filters,
+                                date: {
+                                    checkIn: dates[0],
+                                    checkOut: dates[1],
+                                },
+                            });
                         } else {
-                            setFilters({ ...filters, checkIn: null, checkOut: null });
+                            setFilters({
+                                ...filters,
+                                date: {
+                                    checkIn: null,
+                                    checkOut: null,
+                                },
+                            });
                         }
                     }}
                     value={
-                        filters.checkIn && filters.checkOut
-                            ? [dayjs(filters.checkIn), dayjs(filters.checkOut)]
+                        filters.date.checkIn && filters.date.checkOut
+                            ? [dayjs(filters.date.checkIn), dayjs(filters.date.checkOut)]
                             : []
                     }
                     placeholder={['Ngày đến', 'Ngày đi']}
-                />
+                /> */}
 
                 <Select
                     placeholder="Số người /phòng"
-                    value={filters.roomType ?? undefined}
-                    onChange={(value) => setFilters({ ...filters, roomType: value || null })}
+                    value={filters.capacity || undefined}
+                    onChange={(value) => setFilters({ ...filters, capacity: value || "" })}
                     style={{ width: "100%", marginBottom: 10 }}
                 >
                     <Option value="">Tất cả</Option>
@@ -80,8 +100,8 @@ export default function HotelDetails() {
 
                 <Select
                     placeholder="Chọn loại phòng"
-                    value={filters.roomCategory ?? undefined}
-                    onChange={(value) => setFilters({ ...filters, roomCategory: value || null })}
+                    value={filters.type || undefined}
+                    onChange={(value) => setFilters({ ...filters, type: value || "" })}
                     style={{ width: "100%", marginBottom: 10 }}
                 >
                     <Option value="">Tất cả</Option>
@@ -89,15 +109,20 @@ export default function HotelDetails() {
                     <Option value="Standard">Standard</Option>
                     <Option value="Suite">Suite</Option>
                 </Select>
-
                 <Button type="primary" block onClick={handleSearch}>Tìm kiếm</Button>
+
             </Col>
 
             {/* Danh sách khách sạn */}
             <Col span={18}>
                 <Title level={2} style={{ textAlign: "center" }}>Danh sách khách sạn</Title>
+                {isAdmin && (
+                    <li>
+                        <Link className="btn btn-primary" to="add-room">Thêm phòng +</Link>
+                    </li>
+                )}
                 <Row gutter={[16, 16]} justify="center">
-                    {rooms.map(rooms => (
+                    {rooms.length > 0 && rooms.map(rooms => (
                         <Col key={rooms.roomID} xs={24} sm={12} md={8}>
                             <Card
                                 cover={
@@ -110,7 +135,7 @@ export default function HotelDetails() {
                                 actions={[<Link to={`/room/${rooms.roomID}`}>Đặt phòng</Link>]}
                             >
                                 <Card.Meta
-                                    title={"Room: "+rooms.roomName}
+                                    title={"Room: " + rooms.roomName}
                                     description={
                                         <>
                                             <p>Price: {rooms.price}</p>

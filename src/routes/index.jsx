@@ -14,7 +14,6 @@ import OrderDetails from "../pages/OrderClient/OrderDetails";
 import OrderAdmin from "../pages/OrderAdmin";
 import OrderDetailsAdmin from "../pages/OrderAdmin/orderDetails";
 import ProductAdmin from "../pages/ProductAdmin";
-import AddProduct from "../pages/ProductAdmin/addProduct";
 import EditProduct from "../pages/ProductAdmin/editProduct";
 import User from "../pages/Users";
 import HomeAd from "../pages/Home/homeAdmin";
@@ -22,6 +21,8 @@ import PrivateRoutesAdmin from "../components/PrivateRoutes/adminPrivate";
 import Payments from "../pages/PaymentsCart/payments";
 import HotelDetails from "../pages/Hotel/hotelDetails";
 import RoomDetails from "../pages/Room";
+import AddHotelRoom from "../pages/ProductAdmin/addProduct";
+import AddRoom from "../pages/Room/addRoom";
 export const routes = [
     {
         path: '/',
@@ -72,8 +73,12 @@ export const routes = [
                         element: <ProductAdmin />
                     },
                     {
-                        path: 'admin/add-product',
-                        element: <AddProduct />
+                        path: 'hotel/add-hotel',
+                        element: <AddHotelRoom />
+                    },
+                    {
+                        path: 'hotel/:idHotel/add-room',
+                        element: <AddRoom />
                     },
                     {
                         path: 'admin/edit-product/:id',

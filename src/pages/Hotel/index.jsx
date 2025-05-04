@@ -4,6 +4,7 @@ import {
 } from "antd";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -12,7 +13,7 @@ export default function ShopAntd() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({ location: "" });
-
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
   useEffect(() => {
     fetchHotels({ page: 0 });
   }, []);
@@ -65,6 +66,11 @@ export default function ShopAntd() {
       {/* Danh sách khách sạn */}
       <Col span={18}>
         <Title level={2} style={{ textAlign: "center" }}>Danh sách khách sạn</Title>
+        {isAdmin && (
+          <li>
+            <Link className="btn btn-primary"  to="add-hotel">Thêm khách sạn +</Link>
+          </li>
+        )}
         <Row gutter={[16, 16]} justify="center">
           {hotels.map(hotel => (
             <Col key={hotel.id} xs={24} sm={12} md={8}>

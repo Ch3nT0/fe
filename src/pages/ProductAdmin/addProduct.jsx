@@ -4,196 +4,125 @@ import {
   Box,
   Button,
   TextField,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
   Snackbar,
   Alert,
   Typography,
   Paper,
 } from "@mui/material";
-import { getToken } from "../../services/localStorageService";
 
-
-export default function AddProduct() {
+export default function AddHotelRoom() {
   const navigate = useNavigate();
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    imageBase64: "",
-    imageName: "",
+  const [hotel, setHotel] = useState({
+    hotelName: "",
+    hotelAddress: "",
     description: "",
-    brand: "",
-    color: "",
-    category_id: 2,
+    img: "",
   });
 
   const [error, setError] = useState("");
   const [snackBarOpen, setSnackBarOpen] = useState(false);
-  
-  const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
-    console.log(product)
-  };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setProduct({
-          ...product,
-          imageBase64: reader.result.split(",")[1],
-          imageName: file.name,
-        });
-      };
-    }
+  const handleChange = (e) => {
+    setHotel({ ...hotel, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const token = getToken();
-  
+    console.log(hotel);
+
     try {
-      const response = await fetch("http://localhost:8080/products", {
+      const response = await fetch("http://localhost:8080/add-hotel", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(product),
+        body: JSON.stringify(hotel),
       });
-  
-      if (!response.ok) throw new Error("Không thể thêm sản phẩm!");
-  
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || "Không thể thêm phòng khách sạn!");
+
       setSnackBarOpen(true);
-      setTimeout(() => navigate("/admin/products"), 3000); // Để snackbar có thời gian hiển thị
+      setTimeout(() => navigate("/hotel"), 1000);
     } catch (err) {
       setError(err.message);
     }
   };
-  
+
 
   return (
-    <>
-      <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
-        <Paper sx={{ padding: 4, width: "50%" }}>
-          <Typography variant="h4" gutterBottom>Thêm Sản Phẩm</Typography>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Tên sản phẩm"
-              name="name"
-              value={product.name}
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Giá"
-              name="price"
-              type="number"
-              value={product.price}
-              onChange={handleChange}
-              required
-            />
-
-            {/* Upload ảnh */}
-            <Box mt={2} mb={2} textAlign="center">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                style={{
-                  display: "block",
-                  margin: "auto",
-                  padding: "10px",
-                  border: "1px solid #ccc",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
+    <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
+      <Paper sx={{ padding: 4, width: "50%" }}>
+        <Typography variant="h4" gutterBottom>Thêm Phòng Khách Sạn</Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Tên khách sạn"
+            name="hotelName"
+            value={hotel.hotelName}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Địa chỉ khách sạn"
+            name="hotelAddress"
+            value={hotel.hotelAddress}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Mô tả"
+            name="description"
+            multiline
+            rows={4}
+            value={hotel.description}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Link ảnh"
+            name="img"
+            value={hotel.img}
+            onChange={handleChange}
+            required
+          />
+          {hotel.img && (
+            <Box mt={2} textAlign="center">
+              <img
+                src={hotel.img}
+                alt="Preview ảnh khách sạn"
+                style={{ width: "150px", height: "100px", objectFit: "cover", borderRadius: "5px" }}
               />
-              {product.imageBase64 && (
-                <img
-                  src={`data:image/png;base64,${product.imageBase64}`}
-                  alt="Ảnh sản phẩm"
-                  style={{ marginTop: "10px", width: "100px", height: "100px", objectFit: "cover", borderRadius: "5px" }}
-                />
-              )}
             </Box>
+          )}
+          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+            Thêm Phòng Khách Sạn
+          </Button>
+        </form>
+      </Paper>
 
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Mô tả"
-              name="description"
-              multiline
-              rows={4}
-              value={product.description}
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Thương hiệu"
-              name="brand"
-              value={product.brand}
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Màu sắc"
-              name="color"
-              value={product.color}
-              onChange={handleChange}
-              required
-            />
+      <Snackbar
+        open={snackBarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackBarOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="success">Phòng khách sạn đã được thêm thành công!</Alert>
+      </Snackbar>
 
-            {/* Dropdown danh mục */}
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Danh mục</InputLabel>
-              <Select
-                name="category_id"
-                value={product.category_id}
-                onChange={handleChange}
-                required
-              >
-                <MenuItem value={2}>Giày</MenuItem>
-                <MenuItem value={1}>Phụ kiện</MenuItem>
-              </Select>
-            </FormControl>
-
-            <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-              Thêm Sản Phẩm
-            </Button>
-          </form>
-        </Paper>
-
-        {/* Thông báo khi thêm thành công */}
-        <Snackbar
-          open={snackBarOpen}
-          autoHideDuration={3000}
-          onClose={() => setSnackBarOpen(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Alert severity="success">Sản phẩm đã được thêm thành công!</Alert>
+      {error && (
+        <Snackbar open={!!error} autoHideDuration={3000} onClose={() => setError("")}>
+          <Alert severity="error">{error}</Alert>
         </Snackbar>
-
-        {/* Thông báo lỗi */}
-        {error && (
-          <Snackbar open={!!error} autoHideDuration={3000} onClose={() => setError("")}>
-            <Alert severity="error">{error}</Alert>
-          </Snackbar>
-        )}
-      </Box>
-    </>
+      )}
+    </Box>
   );
 }
