@@ -64,10 +64,9 @@ export default function Login() {
           dispatch(setIsAdmin(false));
           navigate("/home");
         }
-
         // Nếu cần lưu token:
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+        if (data.userId) {
+          localStorage.setItem("userId", data.userId);
         }
       })
       .catch((err) => {
