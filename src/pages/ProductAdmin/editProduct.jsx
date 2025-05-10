@@ -1,228 +1,150 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
-  TextField,
-  Button,
   Box,
-  CircularProgress,
+  Button,
+  TextField,
   Snackbar,
   Alert,
+  Typography,
+  Paper,
 } from "@mui/material";
-import { getToken } from "../../services/localStorageService";
-import { MenuItem, Select, InputLabel, FormControl } from "@mui/material";
 
-export default function EditProduct() {
-  const { id } = useParams();
+export default function EditHotel() {
+  const { idHotel } = useParams();// Lấy id khách sạn từ URL
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  const [hotel, setHotel] = useState({
+    hotelName: "",
+    hotelAddress: "",
+    description: "",
+    img: "",
+  });
+
   const [error, setError] = useState("");
   const [snackBarOpen, setSnackBarOpen] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-    fetch(`http://localhost:8080/products/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // setProduct(data.result);
-        setProduct(()=>{
-          const updatedProduct = {
-            ...data.result,
-            category_id: data.result.category.id
-          };
-          delete updatedProduct.category;
-          console.log(updatedProduct);
-          return updatedProduct;
-        })
-        setLoading(false);
-      })
-      .then(() => {
-        const updatedProduct = {
-          ...product,
-          category_id: product.category.id
-        };
-        delete updatedProduct.category;
-        console.log(updatedProduct);
-      })
-      .catch((err) => {
-        console.error("Lỗi tải sản phẩm:", err);
-        setError("Không thể tải sản phẩm!");
-        setSnackBarOpen(true);
-        setLoading(false);
-      });
-  }, [id, navigate]);
+    const fetchHotel = async () => {
+      try {
+        const encodedQueryString = new URLSearchParams({ idHotel }).toString();
+        console.log(encodedQueryString);
+        const response = await fetch(`http://localhost:8080/hotel?${encodedQueryString}`);
+        const data = await response.json();
+        const tmp = data.find(hotel => hotel.id === parseInt(idHotel));
+        if (!response.ok) throw new Error(data.error || "Không thể lấy dữ liệu khách sạn.");
+
+        if (Array.isArray(data) && data.length > 0) {
+          setHotel(tmp);
+        } else {
+          throw new Error("Không tìm thấy khách sạn.");
+        }
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchHotel();
+  }, [idHotel]);
 
   const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
-
-    console.log("hi");
-    console.log(product)
+    setHotel({ ...hotel, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setProduct({ ...product, imageBase64: reader.result.split(",")[1], imageName: file.name });
-      };
-      setImageFile(file);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`http://localhost:8080/edit-hotel/${idHotel}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(hotel),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Không thể cập nhật khách sạn!");
+
+      setSnackBarOpen(true);
+      setTimeout(() => navigate("/hotel"), 1000);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
-  const handleUpdate = () => {
-    const token = getToken();
-
-    console.log(product)
-    fetch(`http://localhost:8080/products/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(product),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Cập nhật sản phẩm thất bại!");
-        }
-        return res.json();
-      })
-      .then(() => {
-        setSuccessMessage("Cập nhật sản phẩm thành công!");
-        setSnackBarOpen(true);
-        setTimeout(() => navigate("/admin/products"), 2000); // Quay lại sau 2 giây
-      })
-      .catch((err) => {
-        console.error("Lỗi cập nhật sản phẩm:", err);
-        setError("Không thể cập nhật sản phẩm!");
-        setSnackBarOpen(true);
-      });
-  };
-
-  if (loading) return <CircularProgress />;
-  if (!product) return <p>Không tìm thấy sản phẩm!</p>;
-
   return (
-    <>
-
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        mt="50px"
-        paddingTop="80px" // Thêm padding để tránh bị header che mất
-      >
-        <h2>Chỉnh sửa sản phẩm</h2>
-        <TextField
-          label="Tên sản phẩm"
-          name="name"
-          value={product.name || ""}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          sx={{ maxWidth: "75%" }} // 👈 Thu nhỏ chiều rộng
-        />
-        <TextField
-          label="Giá"
-          name="price"
-          type="number"
-          value={product.price || ""}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          sx={{ maxWidth: "75%" }}
-        />
-        {product.image && (
-          <img
-            src={product.image}
-            alt="Hình ảnh sản phẩm"
-            width="100"
-            height="100"
-            style={{ display: "block", marginBottom: "10px", objectFit: "cover" }}
-          />
-        )}
-
-        <TextField
-          label="Hình ảnh (URL)"
-          name="image"
-          value={product.image || ""}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          sx={{ maxWidth: "75%" }}
-        />
-        <input type="file" accept="image/*" onChange={handleFileChange} />
-
-        <TextField
-          label="Thương hiệu"
-          name="brand"
-          value={product.brand || ""}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          sx={{ maxWidth: "75%" }}
-        />
-        <TextField
-          label="Màu sắc"
-          name="color"
-          value={product.color || ""}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          sx={{ maxWidth: "75%" }}
-        />
-        <FormControl fullWidth margin="normal" sx={{ maxWidth: "75%" }}>
-          <InputLabel>Danh mục</InputLabel>
-          <Select
-            name="category_id"
-            value={product?.category_id ?? ""}
+    <Box display="flex" flexDirection="column" alignItems="center" mt={5}>
+      <Paper sx={{ padding: 4, width: "50%" }}>
+        <Typography variant="h4" gutterBottom>Chỉnh sửa thông tin khách sạn</Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Tên khách sạn"
+            name="hotelName"
+            value={hotel.hotelName}
             onChange={handleChange}
-          >
-            <MenuItem value={2}>Giày</MenuItem>
-            <MenuItem value={1}>Phụ kiện</MenuItem>
-          </Select>
-        </FormControl>
-        <TextField
-          label="Mô tả"
-          name="description"
-          multiline
-          rows={4}
-          value={product.description || ""}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          sx={{ maxWidth: "75%" }}
-        />
-        <Box display="flex" gap={2} mt={3}>
-          <Button variant="contained" color="secondary" onClick={() => navigate("/admin/products")}>
-            Hủy
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Địa chỉ khách sạn"
+            name="hotelAddress"
+            value={hotel.hotelAddress}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Mô tả"
+            name="description"
+            multiline
+            rows={4}
+            value={hotel.description}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Link ảnh"
+            name="img"
+            value={hotel.img}
+            onChange={handleChange}
+            required
+          />
+          {hotel.img && (
+            <Box mt={2} textAlign="center">
+              <img
+                src={hotel.img}
+                alt="Preview ảnh khách sạn"
+                style={{ width: "150px", height: "100px", objectFit: "cover", borderRadius: "5px" }}
+              />
+            </Box>
+          )}
+          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+            Cập nhật thông tin
           </Button>
-          <Button variant="contained" color="primary" onClick={handleUpdate}>
-            Cập nhật
-          </Button>
-        </Box>
+        </form>
+      </Paper>
 
-        <Snackbar
-          open={snackBarOpen}
-          autoHideDuration={3000}
-          onClose={() => setSnackBarOpen(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }} // ✅ Đặt vị trí góc trên phải
-        >
-          <Alert severity={successMessage ? "success" : "error"}>{successMessage || error}</Alert>
+      <Snackbar
+        open={snackBarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackBarOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="success">Thông tin đã được cập nhật thành công!</Alert>
+      </Snackbar>
+
+      {error && (
+        <Snackbar open={!!error} autoHideDuration={3000} onClose={() => setError("")}>
+          <Alert severity="error">{error}</Alert>
         </Snackbar>
-      </Box>
-    </>
+      )}
+    </Box>
   );
 }

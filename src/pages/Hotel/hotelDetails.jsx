@@ -34,6 +34,7 @@ export default function HotelDetails() {
             if (!response.ok) throw new Error("Không thể tải danh sách phòng khách sạn!");
 
             const data = await response.json();
+            console.log(data);
             setRooms(data || []);
         } catch (err) {
             console.error("Lỗi API:", err);
@@ -52,6 +53,26 @@ export default function HotelDetails() {
         };
         fetchHotels(params);
     };
+
+    const handleDeleteRoom = async (id) => {
+        if (!window.confirm("Bạn có chắc chắn muốn xóa phòng này không?")) return;
+
+        try {
+            const response = await fetch(`http://localhost:8080/delete-room/${id}`, {
+                method: "DELETE",
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || "Không thể xóa phòng!");
+
+            alert(data.message);
+
+        } catch (err) {
+            alert("Lỗi: " + err.message);
+        }
+        fetchHotels(hotelid);
+    };
+
 
     return (
         <Row gutter={16} style={{ marginTop: 50 }}>
@@ -117,7 +138,7 @@ export default function HotelDetails() {
             <Col span={18}>
                 <Title level={2} style={{ textAlign: "center" }}>Danh sách khách sạn</Title>
                 {isAdmin && (
-                    <li>
+                    <li style={{ marginBottom: 15 }}>
                         <Link className="btn btn-primary" to="add-room">Thêm phòng +</Link>
                     </li>
                 )}
@@ -132,7 +153,11 @@ export default function HotelDetails() {
                                         style={{ height: 250, objectFit: "cover" }}
                                     />
                                 }
-                                actions={[<Link to={`/room/${rooms.roomID}`}>Đặt phòng</Link>]}
+                                actions={[
+                                    <Link to={`/room/${rooms.roomID}`}>Đặt phòng</Link>,
+                                    isAdmin && <Link to={`/edit-room/${rooms.roomID}`}>Sửa</Link>,
+                                    isAdmin && <Button type="link" danger onClick={() => handleDeleteRoom(rooms.roomID)}> Xóa</Button>,
+                                ]}
                             >
                                 <Card.Meta
                                     title={"Room: " + rooms.roomName}
@@ -148,7 +173,7 @@ export default function HotelDetails() {
                         </Col>
                     ))}
                 </Row>
-            </Col>
-        </Row>
+            </Col >
+        </Row >
     );
 }

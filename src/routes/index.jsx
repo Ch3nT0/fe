@@ -22,7 +22,10 @@ import Payments from "../pages/PaymentsCart/payments";
 import HotelDetails from "../pages/Hotel/hotelDetails";
 import RoomDetails from "../pages/Room";
 import AddHotelRoom from "../pages/ProductAdmin/addProduct";
+import EditHotelRoom from "../pages/ProductAdmin/editProduct";
 import AddRoom from "../pages/Room/addRoom";
+import EditRoom from "../pages/Room/editRoom";
+
 export const routes = [
     {
         path: '/',
@@ -77,8 +80,16 @@ export const routes = [
                         element: <AddHotelRoom />
                     },
                     {
+                        path: 'edit-hotel/:idHotel',
+                        element: <EditHotelRoom />
+                    },
+                    {
                         path: 'hotel/:idHotel/add-room',
                         element: <AddRoom />
+                    },
+                    {
+                        path: 'edit-room/:idRoom',
+                        element: <EditRoom />
                     },
                     {
                         path: 'admin/edit-product/:id',
@@ -88,15 +99,14 @@ export const routes = [
                         path: 'admin/order',
                         element: <OrderAdmin />
                     },
-                    
+
                     {
                         path: 'admin',
                         element: <HomeAd />
-                    },{
+                    }, {
                         path: 'admin/accounts',
                         element: <User />
                     },
-
                 ]
             },
             {
@@ -121,7 +131,7 @@ export const routes = [
                     {
                         path: 'order/:id',
                         element: <OrderDetails />
-                    },{
+                    }, {
                         path: 'payments',
                         element: <Payments />
                     },

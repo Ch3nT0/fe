@@ -43,6 +43,25 @@ export default function ShopAntd() {
     fetchHotels(params);
   };
 
+  const handleDeleteHotel = async (id) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa khách sạn này không?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/delete-hotel/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Không thể xóa khách sạn!");
+
+      alert(data.message); // hoặc show snackbar nếu bạn dùng MUI
+      fetchHotels(filters); // gọi lại hàm lấy danh sách khách sạn
+
+    } catch (err) {
+      alert("Lỗi: " + err.message);
+    }
+  };
+
   return (
     <Row gutter={16} style={{ marginTop: 50 }}>
       {/* Bộ lọc */}
@@ -67,8 +86,8 @@ export default function ShopAntd() {
       <Col span={18}>
         <Title level={2} style={{ textAlign: "center" }}>Danh sách khách sạn</Title>
         {isAdmin && (
-          <li>
-            <Link className="btn btn-primary"  to="add-hotel">Thêm khách sạn +</Link>
+          <li style={{ marginBottom: 15 }}>
+            <Link className="btn btn-primary" to="add-hotel">Thêm khách sạn +</Link>
           </li>
         )}
         <Row gutter={[16, 16]} justify="center">
@@ -82,7 +101,12 @@ export default function ShopAntd() {
                     style={{ height: 250, objectFit: "cover" }}
                   />
                 }
-                actions={[<Link to={`/hotel/${hotel.id}`}>Xem chi tiết</Link>]}
+                actions={[
+                  <Link to={`/hotel/${hotel.id}`}>Xem chi tiết</Link>,
+                  isAdmin && <Link to={`/edit-hotel/${hotel.id}`}>Sửa</Link>,
+                  isAdmin && <Button type="link" danger onClick={() => handleDeleteHotel(hotel.id)}>Xóa</Button>,
+                ]}
+
               >
                 <Card.Meta
                   title={hotel.hotelName}

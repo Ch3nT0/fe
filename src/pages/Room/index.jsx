@@ -60,7 +60,7 @@ const RoomDetails = () => {
   // ✅ Đặt phòng + tự cập nhật ngày đã bị đặt
   const handleBook = async () => {
     const userID = localStorage.getItem("userId");
-
+    console.log(filters);
     if (!userID) {
       alert("Bạn cần đăng nhập để đặt phòng.");
       return;
@@ -78,6 +78,7 @@ const RoomDetails = () => {
       checkOut: filters.checkOut.format("YYYY-MM-DD")
     };
 
+    console.log(payload);
     try {
       const response = await fetch("http://localhost:8080/booking", {
         method: "POST",
